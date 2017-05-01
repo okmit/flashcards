@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  filter :locale
+  #filter :locale
 
   root 'main#index'
 
