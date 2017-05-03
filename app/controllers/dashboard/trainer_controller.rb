@@ -2,18 +2,6 @@ class Dashboard::TrainerController < Dashboard::BaseController
   include CardFinder
 
   def index
-    # if params[:id]
-    #   @card = current_user.cards.find(params[:id])
-    # else
-    #   if current_user.current_block
-    #     @card = current_user.current_block.cards.pending.first
-    #     @card ||= current_user.current_block.cards.repeating.first
-    #   else
-    #     @card = current_user.cards.pending.first
-    #     @card ||= current_user.cards.repeating.first
-    #   end
-    # end
-    #
     respond_to do |format|
       format.html
       format.js
@@ -40,17 +28,6 @@ class Dashboard::TrainerController < Dashboard::BaseController
   end
 
   private
-  #
-  # def card
-  #   #@card ||= current_user.cards.find(params[:card_id])
-  #   @card ||= if params[:id]
-  #     current_user.cards.find(params[:id])
-  #   elsif current_user.current_block
-  #     current_user.current_block.cards.pending.first || current_user.current_block.cards.repeating.first
-  #   else
-  #     current_user.cards.pending.first || current_user.cards.repeating.first
-  #   end
-  # end
 
   def translator
     @translator ||= Translator.new(card)
