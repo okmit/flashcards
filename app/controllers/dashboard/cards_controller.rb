@@ -1,43 +1,50 @@
 class Dashboard::CardsController < Dashboard::BaseController
-  before_action :set_card, only: [:destroy, :edit, :update]
+  helper_method :cards, :card
 
   def index
-    @cards = current_user.cards.all.order('review_date')
   end
 
   def new
-    @card = Card.new
   end
 
   def edit
   end
 
   def create
-    @card = current_user.cards.build(card_params)
-    if @card.save
+    if card.save
       redirect_to cards_path
     else
-      respond_with @card
+      respond_with card
     end
   end
 
   def update
-    if @card.update(card_params)
+    if card.update(card_params)
       redirect_to cards_path
     else
-      respond_with @card
+      respond_with card
     end
   end
 
   def destroy
-    @card.destroy
-    respond_with @card
+    card.destroy
+    respond_with card
   end
 
   private
 
-  def set_card
-    @card = current_user.cards.find(params[:id])
+  def cards
+    @cards ||= current_user.cards.all.order('review_date')
+  end
+
+  def card
+    @card ||= if params[:id]
+                current_user.cards.find(params[:id])
+              elsif params[:card]
+                current_user.cards.build(card_params)
+              else
+                Card.new
+              end
   end
 
   def card_params
