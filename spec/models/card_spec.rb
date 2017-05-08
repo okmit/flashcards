@@ -77,65 +77,57 @@ describe Card do
   it 'check_translation Eng OK' do
     card = Card.create(original_text: 'дом', translated_text: 'house',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('house')
-    expect(translator.translated?).to be true
+    result = CardChecker.call(card: card, user_translation: 'house')
+    expect(result.success?).to be true
   end
 
   it 'check_translation Eng NOT' do
     card = Card.create(original_text: 'дом', translated_text: 'house',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('RoR')
-    expect(translator.translated?).to be false
+    result = CardChecker.call(card: card, user_translation: 'RoR')
+    expect(result.success?).to be false
   end
 
   it 'check_translation Rus OK' do
     card = Card.create(original_text: 'house', translated_text: 'дом',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('дом')
-    expect(translator.translated?).to be true
+    result = CardChecker.call(card: card, user_translation: 'дом')
+    expect(result.success?).to be true
   end
 
   it 'check_translation Rus NOT' do
     card = Card.create(original_text: 'house', translated_text: 'дом',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('RoR')
-    expect(translator.translated?).to be false
+    result = CardChecker.call(card: card, user_translation: 'RoR')
+    expect(result.success?).to be false
   end
 
   it 'check_translation full_downcase Eng OK' do
     card = Card.create(original_text: 'ДоМ', translated_text: 'hOuSe',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('HousE')
-    expect(translator.translated?).to be true
+    result = CardChecker.call(card: card, user_translation: 'HousE')
+    expect(result.success?).to be true
   end
 
   it 'check_translation full_downcase Eng NOT' do
     card = Card.create(original_text: 'ДоМ', translated_text: 'hOuSe',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('RoR')
-    expect(translator.translated?).to be false
+    result = CardChecker.call(card: card, user_translation: 'RoR')
+    expect(result.success?).to be false
   end
 
   it 'check_translation full_downcase Rus OK' do
     card = Card.create(original_text: 'hOuSe', translated_text: 'ДоМ',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('дОм')
-    expect(translator.translated?).to be true
+    result = CardChecker.call(card: card, user_translation: 'дОм')
+    expect(result.success?).to be true
   end
 
   it 'check_translation full_downcase Rus NOT' do
     card = Card.create(original_text: 'hOuSe', translated_text: 'ДоМ',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('RoR')
-    expect(translator.translated?).to be false
+    result = CardChecker.call(card: card, user_translation: 'RoR')
+    expect(result.success?).to be false
   end
 
   it 'create card witout user_id' do
@@ -155,48 +147,42 @@ describe Card do
   it 'check_translation Eng OK levenshtein_distance' do
     card = Card.create(original_text: 'дом', translated_text: 'hous',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('house')
-    expect(translator.translated?).to be true
+    result = CardChecker.call(card: card, user_translation: 'house')
+    expect(result.success?).to be true
   end
 
   it 'check_translation Eng OK levenshtein_distance=1' do
     card = Card.create(original_text: 'дом', translated_text: 'hous',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('house')
-    expect(translator.distance).to be 1
+    result = CardChecker.call(card: card, user_translation: 'house')
+    expect(result.distance).to be 1
   end
 
   it 'check_translation Rus OK levenshtein_distance' do
     card = Card.create(original_text: 'house', translated_text: 'до',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('дом')
-    expect(translator.translated?).to be true
+    result = CardChecker.call(card: card, user_translation: 'дом')
+    expect(result.success?).to be true
   end
 
   it 'check_translation Rus OK levenshtein_distance=1' do
     card = Card.create(original_text: 'house', translated_text: 'до',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('дом')
-    expect(translator.distance).to be 1
+    result = CardChecker.call(card: card, user_translation: 'дом')
+    expect(result.distance).to be 1
   end
 
   it 'check_translation Eng NOT levenshtein_distance=2' do
     card = Card.create(original_text: 'дом', translated_text: 'hou',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('RoR')
-    expect(translator.translated?).to be false
+    result = CardChecker.call(card: card, user_translation: 'RoR')
+    expect(result.success?).to be false
   end
 
   it 'check_translation Rus NOT levenshtein_distance=2' do
     card = Card.create(original_text: 'house', translated_text: 'д',
                        user_id: 1, block_id: 1)
-    translator = Translator.new(card)
-    translator.translate('RoR')
-    expect(translator.translated?).to be false
+    result = CardChecker.call(card: card, user_translation: 'RoR')
+    expect(result.success?).to be false
   end
 end

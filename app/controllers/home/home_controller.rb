@@ -1,5 +1,6 @@
 class Home::HomeController < Home::BaseController
-  include CardFinder
+  include CardSetter
+  before_action :set_card
 
   def index
     respond_to do |format|

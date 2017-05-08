@@ -1,5 +1,6 @@
 class Dashboard::CardsController < Dashboard::BaseController
-  helper_method :cards, :card
+  before_action :set_card, except: [:index]
+  before_action :set_cards, only: [:index]
 
   def index
   end
@@ -11,33 +12,33 @@ class Dashboard::CardsController < Dashboard::BaseController
   end
 
   def create
-    if card.save
+    if @card.save
       redirect_to cards_path
     else
-      respond_with card
+      respond_with @card
     end
   end
 
   def update
-    if card.update(card_params)
+    if @card.update(card_params)
       redirect_to cards_path
     else
-      respond_with card
+      respond_with @card
     end
   end
 
   def destroy
-    card.destroy
-    respond_with card
+    @card.destroy
+    respond_with @card
   end
 
   private
 
-  def cards
-    @cards ||= current_user.cards.all.order('review_date')
+  def set_cards
+    @cards ||= current_user.cards.order(review_date: :desc)
   end
 
-  def card
+  def set_card
     @card ||= if params[:id]
                 current_user.cards.find(params[:id])
               elsif params[:card]

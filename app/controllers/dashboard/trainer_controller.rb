@@ -1,5 +1,6 @@
 class Dashboard::TrainerController < Dashboard::BaseController
-  include CardFinder
+  include CardSetter
+  before_action :set_card, only: [:index, :review_card]
 
   def index
     respond_to do |format|
@@ -9,29 +10,16 @@ class Dashboard::TrainerController < Dashboard::BaseController
   end
 
   def review_card
-    translator.translate(trainer_params[:user_translation])
+    result = CardChecker.call(card: @card, user_translation: trainer_params[:user_translation])
 
-    if translator.translated?
-      if translator.correct_translation?
-        flash[:notice] = t(:correct_translation_notice)
-      else
-        flash[:alert] = t 'translation_from_misprint_alert',
-                          user_translation: trainer_params[:user_translation],
-                          original_text: card.original_text,
-                          translated_text: card.translated_text
-      end
-      redirect_to trainer_path
+    if result.success?
+      redirect_to trainer_path, alert: result.alert, notice: result.notice
     else
-      flash[:alert] = t(:incorrect_translation_alert)
-      redirect_to trainer_path(id: card.id)
+      redirect_to trainer_path(id: @card.id), alert: result.alert
     end
   end
 
   private
-
-  def translator
-    @translator ||= Translator.new(card)
-  end
 
   def trainer_params
     params.permit(:user_translation)
