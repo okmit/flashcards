@@ -32,6 +32,7 @@ gem 'http_accept_language'
 gem 'rollbar'
 gem 'newrelic_rpm'
 gem 'interactor', '~> 3.1'
+gem 'responders', '~> 2.3'
 
 group :development, :test do
   gem 'rspec-rails'

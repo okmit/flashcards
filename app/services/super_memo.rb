@@ -6,7 +6,7 @@ class SuperMemo
   class << self
     def algorithm(card, distance, distance_limit)
       quality = set_quality(card.attempt, distance, distance_limit)
-      efactor = set_efactor(card.efactor, card.quality)
+      efactor = set_efactor(card.efactor, quality)
       sm_hash = if quality >= 3
                   set_interval(card.interval, card.repeat + 1, efactor)
                 else

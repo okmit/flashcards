@@ -35,11 +35,11 @@ class Dashboard::CardsController < Dashboard::BaseController
   private
 
   def set_cards
-    @cards ||= current_user.cards.order(review_date: :desc)
+    @cards = current_user.cards.order(review_date: :desc)
   end
 
   def set_card
-    @card ||= if params[:id]
+    @card = if params[:id]
                 current_user.cards.find(params[:id])
               elsif params[:card]
                 current_user.cards.build(card_params)
