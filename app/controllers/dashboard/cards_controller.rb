@@ -40,12 +40,12 @@ class Dashboard::CardsController < Dashboard::BaseController
 
   def set_card
     @card = if params[:id]
-                current_user.cards.find(params[:id])
-              elsif params[:card]
-                current_user.cards.build(card_params)
-              else
-                Card.new
-              end
+              current_user.cards.find(params[:id])
+            elsif params[:card]
+              current_user.cards.build(card_params)
+            else
+              Card.new
+            end
   end
 
   def card_params

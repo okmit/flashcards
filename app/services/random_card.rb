@@ -13,4 +13,3 @@ class RandomCard
     context.fail! unless context.card
   end
 end
-
