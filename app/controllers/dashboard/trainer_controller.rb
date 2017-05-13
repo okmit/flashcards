@@ -1,6 +1,6 @@
 class Dashboard::TrainerController < Dashboard::BaseController
   include CardSetter
-  before_action :set_card, only: [:index, :review_card]
+  before_action :set_random_card, only: [:index, :review_card]
 
   def index
     respond_to do |format|
