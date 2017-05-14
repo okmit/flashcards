@@ -9,7 +9,5 @@ class RandomCard
                    else
                      context.user.cards.pending.first || context.user.cards.repeating.first
                    end
-
-    context.fail! unless context.card
   end
 end

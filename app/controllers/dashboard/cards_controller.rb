@@ -1,8 +1,8 @@
 class Dashboard::CardsController < Dashboard::BaseController
   before_action :set_card, except: [:index]
-  before_action :set_cards, only: [:index]
 
   def index
+    @cards = current_user.cards.order(review_date: :desc)
   end
 
   def new
@@ -33,10 +33,6 @@ class Dashboard::CardsController < Dashboard::BaseController
   end
 
   private
-
-  def set_cards
-    @cards = current_user.cards.order(review_date: :desc)
-  end
 
   def set_card
     @card = if params[:id]
