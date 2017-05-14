@@ -1,19 +1,17 @@
 class Dashboard::CardsController < Dashboard::BaseController
-  before_action :set_card, only: [:destroy, :edit, :update]
+  before_action :set_card, except: [:index]
 
   def index
-    @cards = current_user.cards.all.order('review_date')
+    @cards = current_user.cards.order(review_date: :desc)
   end
 
   def new
-    @card = Card.new
   end
 
   def edit
   end
 
   def create
-    @card = current_user.cards.build(card_params)
     if @card.save
       redirect_to cards_path
     else
@@ -37,7 +35,13 @@ class Dashboard::CardsController < Dashboard::BaseController
   private
 
   def set_card
-    @card = current_user.cards.find(params[:id])
+    @card = if params[:id]
+              current_user.cards.find(params[:id])
+            elsif params[:card]
+              current_user.cards.build(card_params)
+            else
+              Card.new
+            end
   end
 
   def card_params
